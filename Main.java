@@ -5,11 +5,11 @@ import java.util.Scanner;
 public class Main {
     private static Scanner scanner = new Scanner(System.in);
     private static MobilePhone mobilePhone = new MobilePhone();
-    private static Contact contact;
 
     public static void main(String[] args) {
         boolean flag = true;
         int choice;
+        phoneStart();
         printInstruction();
         while (flag) {
             System.out.println("\nPlease enter your choice:");
@@ -23,18 +23,19 @@ public class Main {
                     mobilePhone.printContact();
                     break;
                 case 2:
-                    addContact();
+                    mobilePhone.addContact();
                     break;
                 case 3:
-                    updateContact();
+                    mobilePhone.updateContact();
                     break;
                 case 4:
-                    removeContact();
+                    mobilePhone.removeContact();
                     break;
                 case 5:
-                    searchContact();
+                    mobilePhone.searchContact();
                     break;
                 case 6:
+                    phoneShutDown();
                     flag = false;
                     break;
             }
@@ -42,8 +43,14 @@ public class Main {
 
 
     }
+    private static void phoneStart(){
+        System.out.println("Phone starting...");
+    }
+    private static void phoneShutDown(){
+        System.out.println("Phone shutting down...");
+    }
 
-    private static void printInstruction() {
+    public static void printInstruction() {
         System.out.println("\nPress " +
                 "\n" +
                 "\n0 - To print choice options." +
@@ -52,56 +59,7 @@ public class Main {
                 "\n3 - To update an existing contact." +
                 "\n4 - To remove an existing contact." +
                 "\n5 - To search for a contact." +
-                "\n6 - To quit the application.");
+                "\n6 - To shutdown the phone.");
     }
 
-    private static void addContact() {
-        System.out.println("\nPlease enter the name:");
-        String name = scanner.nextLine().toLowerCase();
-        if (!mobilePhone.onContactListName(name)) {
-            System.out.println("Please enter the phone number");
-            String phoneNum = scanner.nextLine().toLowerCase();
-            mobilePhone.addContact(new Contact(name, phoneNum));
-            System.out.println("\nContact successfully added...");
-        } else {
-            System.out.println(name + " already exist...\n\nWould you like to update the contact[Y\\N]:");
-            char updateContactChoice = Character.toLowerCase(scanner.findInLine(".").charAt(0));
-            scanner.nextLine();
-            switch (updateContactChoice) {
-                case 'y':
-                    mobilePhone.updateContact(name);
-                    break;
-                case 'n':
-                    printInstruction();
-                    break;
-                default:
-                    System.out.println("choose between 'y' or 'n' ");
-                    break;
-            }
-        }
-
-    }
-
-    private static void updateContact() {
-        System.out.println("\nPlease enter the name to be updated:");
-        String name = scanner.nextLine().toLowerCase();
-        mobilePhone.updateContact(name);
-    }
-
-    private static void removeContact() {
-        System.out.println("\nPlease enter the name of the contact to delete:");
-        String name = scanner.nextLine().toLowerCase();
-        mobilePhone.removeContact(name);
-    }
-
-    private static void searchContact() {
-        System.out.println("\nPlease enter the name to query:");
-        String name = scanner.nextLine().toLowerCase();
-        Contact contactDetails = mobilePhone.searchContact(name);
-        if (contactDetails != null) {
-            System.out.println("\nName: " + contactDetails.getName() + " , Phone number: " + contactDetails.getPhoneNum());
-        } else {
-            System.out.println("\n" + name + " is not on your contact list...");
-        }
-    }
 }
